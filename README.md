@@ -29,6 +29,12 @@ localhost:8080/token=abc.def.ghi
 1. 認証状態のstateを参照しているAuthContextが更新される
 1. useAuthをとおしてAuthContextを参照しているAntuContentsが再度レンダリングされる
 
+## メモ
+
+カスタムフックでstateを更新しない。
+コンポーネントAレンダリング -> カスタムフック呼び出し -> カスタムフック内のstate更新 -> カスタムフックを参照しているコンポーネントAレンダリング -> カスタムフック呼び出しの無限ループに入ってしまう、
+カスタムフックでは更新手段の詳細を隠蔽して、useStateのように*値と更新手段を提供するようにする*とよさそう。
+
 ## 参考
 
 https://usehooks.com/useAuth/
