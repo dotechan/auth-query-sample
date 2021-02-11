@@ -1,46 +1,34 @@
-# Getting Started with Create React App
+## 概要
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+エクリパラメータにtokenが付与されていた場合は認証済と判定するサンプル
 
-## Available Scripts
+## 確認方法
 
-In the project directory, you can run:
+### 未認証
 
-### `npm start`
+localhost:8080/
+にアクセスする
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 認証済
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+localhost:8080/token=abc.def.ghi
+にアクセスする
 
-### `npm test`
+## 責務
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| ファイル名 | 説明 |
+| ---- | ---- |
+| AuthContext.ts | 認証情報（ユーザ名）を保持するReactのContext |
+| AuthProvider.tsx | 認証情報を子コンポーネントにレンダープロップとして提供するコンポーネント。認証状態の判定、認証状態の更新行っている（認証処理を隠蔽） |
+| useAuth.ts | AuthContextから取得した認証情報を提供するカスタムフック |
+| AuthContents.tsx | 認証状態によってレンダリングするコンポーネントを切り替えるコンポーネント |
 
-### `npm run build`
+## 流れ
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. クエリパラメータにtokenが含まれている場合、AuthProviderの副作用フックによってAuthProviderで宣言した認証状態のstateを更新する
+1. 認証状態のstateを参照しているAuthContextが更新される
+1. useAuthをとおしてAuthContextを参照しているAntuContentsが再度レンダリングされる
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 参考
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+https://usehooks.com/useAuth/
